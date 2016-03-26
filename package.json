@@ -2,10 +2,13 @@
   "name": "newton",
   "version": "0.0.1",
   "scripts": {
-    "start": ""
+    "start": "npm run serve | npm run dev",
+    "serve": "./node_modules/.bin/http-server -p 8080",
+    "dev": "webpack-dev-server --progress --colors --port 8090"
   },
   "dependencies": {
-    "react": "^0.14.7"
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
   },
   "devDependencies": {
     "http-server": "^0.9.0",
