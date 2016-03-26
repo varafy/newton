@@ -1,0 +1,15 @@
+.DS_Store
+*/.DS_Store
+node_modules/
+.idea/
+*/.idea/
+npm-debug.log
+PDF/
+ssl/
+.ntvs_analysis.dat
+*.njsproj
+*.cache
+obj/Debug/
+*.dll
+*.suo
+./assets/
