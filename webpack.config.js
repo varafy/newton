@@ -1,36 +1,51 @@
-/**
- * Created by jsharp on 2016-03-25.
- *
- *      Varafy Inc.
- *
- */
+const path = require('path');
+const webpack = require('webpack');
+const PORT = process.env.PORT || 4000;
 
 module.exports = {
-  entry: './app/index.jsx',
+  cache: true,
+  context: __dirname,
+  devtool: 'eval-cheap-module-source-map',
+
+  entry: {
+    bundle: [
+      'webpack-dev-server/client?http://localhost:' + PORT,
+      'webpack/hot/only-dev-server',
+      './index.js',
+    ],
+  },
+
   output: {
-    filename: 'bundle.js', //this is the default name, so you can skip it
-    //at this directory our bundle file will be available
-    //make sure port 8090 is used when launching webpack-dev-server
-    publicPath: 'http://localhost:8090/assets'
+    path: path.resolve(__dirname, 'assets'),
+    publicPath: '/assets/',
+    filename: '[name].js',
+  },
+
+  resolve: {
+    modulesDirectories: [
+      './node_modules',
+    ],
+    fallback: path.resolve(__dirname, 'node_modules'),
   },
 
   module: {
     loaders: [
-      {
-        //tell webpack to use jsx-loader for all *.jsx files
-        test: /\.jsx$/,
-        loader: 'jsx-loader?insertPragma=React.DOM&harmony'
-      }
-    ]
+      { test: /\.js$/, loader: 'react-hot!babel-loader?cacheDirectory,presets[]=es2015,presets[]=react', exclude: /(node_modules|vendor)/ },
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.(ttf|eot|svg|jpg|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
+    ],
   },
 
-  externals: {
-    //don't bundle the 'react' npm package with our bundle.js
-    //but get it from a global 'React' variable
-    'react': 'React'
+  resolveLoader: {
+    fallback: __dirname + '/node_modules',
   },
 
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+      _: 'lodash',
+    }),
+  ],
 };
