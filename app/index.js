@@ -8,11 +8,25 @@
 'use strict';
 import React from 'react';
 import { render } from 'react-dom';
-import Hello from './components/Hello';
+// import { Provider } from 'react-redux';
+import configureStore from './stores';
+import App from './components/App';
 
+const store = configureStore();
 document.addEventListener('DOMContentLoaded', () => {
   render(
-    <Hello />,
+    //=<Provider store={store}>
+      <App store={store} />,
+    //</Provider>,
     document.getElementById('app')
   );
+
+  store.subscribe(() => {
+    render(
+      //=<Provider store={store}>
+      <App store={store} />,
+      //</Provider>,
+      document.getElementById('app')
+    );
+  });
 });
