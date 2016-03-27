@@ -5,6 +5,8 @@
  *
  */
 
+const _ = require('lodash');
+
 const initialState = {
   expression: null
 };
@@ -12,8 +14,9 @@ const initialState = {
 module.exports = function (state = initialState, action) {
   switch (action.type) {
     case 'SET_EXPRESSION': {
-      state.expression = action.expression;
-      break;
+      return _.assign({}, state, {
+        expression: action.expression,
+      });
     }
 
     default: {

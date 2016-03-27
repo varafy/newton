@@ -7,49 +7,33 @@
 
 'use strict';
 
+import Input from './Input';
+import Results from './Results';
 import React, { Component } from 'react';
-
-function solveExpression(exp) {
-  return (
-    <h3>
-      {exp}
-    </h3>
-  );
-}
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.store.getState();
 
     this.fireExpressionSolver = this.fireExpressionSolver.bind(this);
   }
 
-  fireExpressionSolver() {
+  fireExpressionSolver(value) {
     this.props.store.dispatch({
       type: 'SET_EXPRESSION',
-      expression: this._input.value,
+      expression: value,
     });
   }
 
   render() {
     return (
       <div>
-      <div className="input-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Enter your expression..."
-          ref={(c) => this._input = c}
-        />
-        <span className="input-group-btn">
-          <button className="btn btn-success" type="button" onClick={this.fireExpressionSolver}>Solve Expression</button>
-        </span>
-      </div>
-        {solveExpression(this.state.expression)}
+        <Input onSubmit={this.fireExpressionSolver} />
+        <Results state={this.props.store.getState()} />
       </div>
     );
   }
+
 }
 
 export default App;
